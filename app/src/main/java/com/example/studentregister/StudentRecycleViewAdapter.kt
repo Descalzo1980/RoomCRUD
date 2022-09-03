@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.studentregister.databinding.ListItemBinding
 import com.example.studentregister.db.Student
 
 class StudentRecycleViewAdapter(
@@ -14,9 +15,8 @@ class StudentRecycleViewAdapter(
     private val studentList = ArrayList<Student>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val listItem = layoutInflater.inflate(R.layout.list_item,parent,false)
-        return StudentViewHolder(listItem)
+        val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return StudentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
@@ -34,14 +34,14 @@ class StudentRecycleViewAdapter(
 
 }
 
-class StudentViewHolder(private val view:View):RecyclerView.ViewHolder(view){
+class StudentViewHolder(private val binding: ListItemBinding):RecyclerView.ViewHolder(binding.root){
     fun bind(student: Student,clickListener:(Student)->Unit){
-        val nameTextView = view.findViewById<TextView>(R.id.tv_name)
-        val emailTextView = view.findViewById<TextView>(R.id.tv_email)
-        nameTextView.text = student.name
-        emailTextView.text = student.email
-        view.setOnClickListener {
+        binding.apply {
+        tvName.text = student.name
+        tvEmail.text = student.email
+        root.setOnClickListener {
             clickListener(student)
+            }
         }
     }
 }
